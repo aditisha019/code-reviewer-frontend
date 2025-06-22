@@ -26,7 +26,7 @@ function App() {
     setError(null);
     try {
       // Use environment variable with fallback for local development
-      const backendURL = const backendURL = import.meta.env.VITE_BACKEND_URL;
+      const backendURL = import.meta.env.VITE_BACKEND_URL;
       const response = await axios.post(`${backendURL}/ai/get-review`, { code });
       
       setReview(response.data || 'No review generated');
