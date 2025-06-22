@@ -27,7 +27,7 @@ function App() {
     
     try {
       // Use environment variable with fallback for local development
-      const backendURL = process.env.REACT_APP_BACKEND_URL || 'https://code-reviewer-bnd.onrender.com';
+      const backendURL = process.env.REACT_APP_BACKEND_URL;
       const response = await axios.post(`${backendURL}/ai/get-review`, { code });
       
       setReview(response.data || 'No review generated');
