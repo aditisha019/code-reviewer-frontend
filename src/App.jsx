@@ -24,7 +24,7 @@ function App() {
 
     try {
       const response = await axios.post(`${backendURL}/ai/get-review`, { code });
-      setReview(response.data);
+      setReview(response.data.review);
     } catch (error) {
       console.error("Error fetching review:", error);
       setReview("❌ Failed to fetch review. Please check if the backend is live and reachable.");
