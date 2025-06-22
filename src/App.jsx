@@ -24,11 +24,9 @@ function App() {
   async function reviewCode() {
     setIsLoading(true);
     setError(null);
-
-    console.log("Backend URL:", import.meta.env.REACT_APP_BACKEND_URL); 
     try {
       // Use environment variable with fallback for local development
-      const backendURL = import.meta.env.REACT_APP_BACKEND_URL;
+      const backendURL = const backendURL = import.meta.env.VITE_BACKEND_URL;
       const response = await axios.post(`${backendURL}/ai/get-review`, { code });
       
       setReview(response.data || 'No review generated');
