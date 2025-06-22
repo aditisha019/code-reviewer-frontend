@@ -20,7 +20,7 @@ function App() {
   }, []);
 
   async function reviewCode() {
-    const backendURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+    const backendURL = process.env.REACT_APP_BACKEND_URL;
 
     try {
       const response = await axios.post(`${backendURL}/ai/get-review`, { code });
