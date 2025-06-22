@@ -1,28 +1,43 @@
-import { useState, useEffect } from 'react'
-import "prismjs/themes/prism-tomorrow.css"
-import Editor from "react-simple-code-editor"
-import prism from "prismjs"
-import Markdown from "react-markdown"
+import { useState, useEffect } from 'react';
+import "prismjs/themes/prism-tomorrow.css";
+import Editor from "react-simple-code-editor";
+import prism from "prismjs";
+import "prismjs/components/prism-javascript";
+import Markdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
-import axios from 'axios'
-import './App.css'
+import axios from 'axios';
+import './App.css';
 
 function App() {
-  const [ count, setCount ] = useState(0)
-  const [ code, setCode ] = useState(` function sum() {
-  return 1 + 1
-}`)
-
-  const [ review, setReview ] = useState(``)
+  const [code, setCode] = useState(`function sum() {
+  return 1 + 1;
+}`);
+  const [review, setReview] = useState('Click "Review" to analyze your code');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    prism.highlightAll()
-  }, [])
+    prism.highlightAll();
+  }, []);
 
   async function reviewCode() {
-    const response = await axios.post('https://code-reviewer-bnd.onrender.com/ai/get-review', { code })
-    setReview(response.data)
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Use environment variable with fallback for local development
+      const backendURL = process.env.REACT_APP_BACKEND_URL || 'https://code-reviewer-bnd.onrender.com';
+      const response = await axios.post(`${backendURL}/ai/get-review`, { code });
+      
+      setReview(response.data || 'No review generated');
+    } catch (error) {
+      console.error("Error fetching review:", error);
+      setError(error.response?.data?.message || error.message || 'Failed to fetch review');
+      setReview('❌ Error: Could not get review. See console for details.');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -32,7 +47,7 @@ function App() {
           <div className="code">
             <Editor
               value={code}
-              onValueChange={code => setCode(code)}
+              onValueChange={newCode => setCode(newCode)}
               highlight={code => prism.highlight(code, prism.languages.javascript, "javascript")}
               padding={10}
               style={{
@@ -41,26 +56,27 @@ function App() {
                 border: "1px solid #ddd",
                 borderRadius: "5px",
                 height: "100%",
-                width: "100%"
+                width: "100%",
               }}
             />
           </div>
-          <div
-            onClick={reviewCode}
-            className="review">Review</div>
+          <button 
+            onClick={reviewCode} 
+            className="review"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Analyzing...' : 'Review'}
+          </button>
+          {error && <p className="error-message">{error}</p>}
         </div>
         <div className="right">
-          <Markdown
-
-            rehypePlugins={[ rehypeHighlight ]}
-
-          >{review}</Markdown>
+          <Markdown rehypePlugins={[rehypeHighlight]}>
+            {review}
+          </Markdown>
         </div>
       </main>
     </>
-  )
+  );
 }
 
-
-
-export default App
+export default App;
