@@ -19,17 +19,20 @@ function App() {
     prism.highlightAll();
   }, []);
 
-  async function reviewCode() {
-    const backendURL = process.env.REACT_APP_BACKEND_URL;
+async function reviewCode() {
+  const backendURL = process.env.REACT_APP_BACKEND_URL || import.meta.env.VITE_BACKEND_URL;
 
-    try {
-      const response = await axios.post(`${backendURL}/ai/get-review`, { code });
-      setReview(response.data.review);
-    } catch (error) {
-      console.error("Error fetching review:", error);
-      setReview("❌ Failed to fetch review. Please check if the backend is live and reachable.");
-    }
+  try {
+    const response = await axios.post(`${backendURL}/ai/get-review`, { code });
+    console.log("🚀 Full backend response:", response);
+    console.log("✅ Review string:", response.data.review);
+    setReview(response.data.review); // <- keep this line
+  } catch (error) {
+    console.error("❌ Error fetching review:", error);
+    setReview("❌ Failed to fetch review. Please check if the backend is live and reachable.");
   }
+}
+
 
   return (
     <>
