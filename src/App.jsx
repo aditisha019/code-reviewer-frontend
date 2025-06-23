@@ -8,6 +8,7 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import axios from 'axios';
 import './App.css';
+import { FaRobot } from 'react-icons/fa';
 
 function App() {
   const [code, setCode] = useState(`function sum() {
@@ -41,6 +42,8 @@ function App() {
 
   return (
     <>
+     <h1 className="app-heading"><FaRobot style={{ marginRight: '10px' }} /> AI Code Reviewer</h1>
+     <p className="subheading">Get instant feedback and suggestions on your code using AI.</p>
       <main>
         <div className="left">
           <div className="code">
