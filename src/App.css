@@ -64,7 +64,7 @@ main .left .review {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
-  background-color: rgb(219, 219, 255);
+  background-color: #dbdbff;
   color: #000000;
   padding: 0.5rem 2rem;
   font-weight: 500;
@@ -75,8 +75,10 @@ main .left .review {
 
 
 main .right {
-  background-color: #212121;
+  background-color: #0c0c0c;
   padding: 1rem 2rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   overflow: auto;
+  border: 1px solid #dbdbff;
+  color: #dbdbff;
 }
